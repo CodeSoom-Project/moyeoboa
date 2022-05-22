@@ -3,7 +3,6 @@ package com.jakeseo.moyeoboa.controller;
 import com.jakeseo.moyeoboa.application.MeetupService;
 import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
 import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
-import com.jakeseo.moyeoboa.entity.Meetup;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/meetups")
 @RequiredArgsConstructor
@@ -23,9 +25,10 @@ public class MeetupController {
     private final ModelMapper modelMapper;
 
     @GetMapping("")
-    public String list() {
-        // TODO: meetup 리스트를 가져온다. 리스트 검색은 추후에 지원할 예정이다.
-        return "meetup 리스트";
+    public List<MeetupResponseDto> list() {
+        return meetupService.list().stream()
+                .map((meetup -> modelMapper.map(meetup, MeetupResponseDto.class)))
+                .collect(Collectors.toList());
     }
 
     @PostMapping("")
