@@ -1,6 +1,5 @@
 package com.jakeseo.moyeoboa.learning_test;
 
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
 import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
 import com.jakeseo.moyeoboa.entity.Meetup;
 import org.assertj.core.api.Assertions;
@@ -36,7 +35,7 @@ public class ModelMapperTest {
                         .capacity(5)
                         .startTime(LocalDateTime.now())
                         .endTime(LocalDateTime.now().plusHours(5))
-                        .members(List.of("Jake Seo"))
+                        .joinUsers("Jake Seo")
                         .build();
 
                 MeetupResponseDto responseDto = modelMapper.map(meetup, MeetupResponseDto.class);
@@ -48,7 +47,7 @@ public class ModelMapperTest {
                 Assertions.assertThat(responseDto.getPlace()).isEqualTo(meetup.getPlace());
                 Assertions.assertThat(responseDto.getStartTime()).isEqualTo(meetup.getStartTime());
                 Assertions.assertThat(responseDto.getEndTime()).isEqualTo(meetup.getEndTime());
-                Assertions.assertThat(responseDto.getMembers().toString()).isEqualTo(meetup.getMembers().toString());
+                Assertions.assertThat(responseDto.getJoinUsers()).isEqualTo(meetup.getJoinUsers());
             }
         }
     }
