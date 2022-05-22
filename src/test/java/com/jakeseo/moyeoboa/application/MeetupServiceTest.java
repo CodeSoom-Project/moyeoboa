@@ -3,7 +3,6 @@ package com.jakeseo.moyeoboa.application;
 import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
 import com.jakeseo.moyeoboa.entity.Meetup;
 import com.jakeseo.moyeoboa.repository.MeetupJpaRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
