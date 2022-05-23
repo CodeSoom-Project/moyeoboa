@@ -2,6 +2,7 @@ package com.jakeseo.moyeoboa.application;
 
 import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
 import com.jakeseo.moyeoboa.entity.Meetup;
+import com.jakeseo.moyeoboa.exception.MeetupNotFoundException;
 import com.jakeseo.moyeoboa.repository.MeetupJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class MeetupService {
 
     public List<Meetup> list() {
         return meetupJpaRepository.findAll();
+    }
+
+    public Meetup detail(Long id) {
+        return meetupJpaRepository.findById(id)
+                .orElseThrow(() -> new MeetupNotFoundException(id));
     }
 }

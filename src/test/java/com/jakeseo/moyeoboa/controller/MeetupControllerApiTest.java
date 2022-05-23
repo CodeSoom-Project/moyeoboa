@@ -161,4 +161,83 @@ public class MeetupControllerApiTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("/{id} 경로는")
+    class Describe_root_path_with_path_variable {
+        @Nested
+        @DisplayName("GET 요청을 받았을 때")
+        class Context_get_request {
+
+            @Nested
+            @DisplayName("id 에 해당하는 Meetup 데이터가 있다면")
+            class Context_with_meetup_data {
+                private final MockHttpServletRequestBuilder requestBuilder;
+                private final ResultActions resultActions;
+                private final String pathWithId;
+                private final Meetup foundMeetup;
+
+                public Context_with_meetup_data() throws Exception {
+                    meetupJpaRepository.deleteAll();
+
+                    MeetupCreationDto dto = MeetupCreationDto.builder()
+                            .name("모각코")
+                            .place("서울")
+                            .capacity(5)
+                            .startTime(LocalDateTime.now())
+                            .endTime(LocalDateTime.now().plusHours(5))
+                            .joinUsers("Jake Seo")
+                            .build();
+
+                    foundMeetup = meetupService.create(dto);
+                    pathWithId = "/meetups/" + foundMeetup.getId();
+
+                    requestBuilder = get(pathWithId);
+                    resultActions = mockMvc.perform(requestBuilder);
+                }
+
+                @Test
+                @DisplayName("찾은 Meetup 객체를 JSON 형태로 반환한다.")
+                void it_returns_json_object() throws Exception {
+                    resultActions.andExpect(content().json(objectMapper.writeValueAsString(foundMeetup)));
+                }
+
+                @Test
+                @DisplayName("200 OK 코드로 응답한다.")
+                void it_responses_200_ok() throws Exception {
+                    resultActions.andExpect(status().isOk());
+                }
+            }
+
+            @Nested
+            @DisplayName("id 에 해당하는 Meetup 데이터가 없다면")
+            class Context_without_meetup_data {
+                private final MockHttpServletRequestBuilder requestBuilder;
+                private final ResultActions resultActions;
+                private final String pathWithId;
+
+                public Context_without_meetup_data() throws Exception {
+                    meetupJpaRepository.deleteAll();
+
+                    pathWithId = "/meetups/1";
+
+                    requestBuilder = get(pathWithId);
+                    resultActions = mockMvc.perform(requestBuilder);
+                }
+
+                @Test
+                @DisplayName("MeetupNotFoundException 예외를 반환한다.")
+                void it_throws_not_found_exception() throws Exception {
+                    resultActions.andExpect(content().string(containsString("MeetupNotFoundException")))
+                            .andDo(print());
+                }
+
+                @Test
+                @DisplayName("404 NOT FOUND 코드로 응답한다.")
+                void it_responses_404_not_found() throws Exception {
+                    resultActions.andExpect(status().isNotFound());
+                }
+            }
+        }
+    }
 }

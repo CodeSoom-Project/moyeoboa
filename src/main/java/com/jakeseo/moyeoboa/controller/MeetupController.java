@@ -39,8 +39,7 @@ public class MeetupController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id) {
-        // TODO: 해당 id 를 가진 meetup 의 상세 정보를 보여준다.
-        return "meetup 상세정보";
+    public MeetupResponseDto detail(@PathVariable Long id) {
+        return modelMapper.map(meetupService.detail(id), MeetupResponseDto.class);
     }
 }
