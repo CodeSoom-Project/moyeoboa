@@ -3,7 +3,6 @@ package com.jakeseo.moyeoboa.dto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
 import java.util.HashSet;
 import java.util.List;

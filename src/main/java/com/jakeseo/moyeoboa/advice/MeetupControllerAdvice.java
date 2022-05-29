@@ -12,6 +12,6 @@ public class MeetupControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(MeetupNotFoundException.class)
     public ErrorResponseDto handleNotFound() {
-        return new ErrorResponseDto(HttpStatus.NOT_FOUND, MeetupNotFoundException.class.getName(), "Meetup Not Found");
+        return new ErrorResponseDto(HttpStatus.NOT_FOUND, MeetupNotFoundException.class.getName(), "모임을 찾을 수 없습니다.");
     }
 }
