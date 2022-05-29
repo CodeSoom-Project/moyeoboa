@@ -49,7 +49,7 @@ public class MeetupControllerApiTest {
         @DisplayName("POST 요청을 받았을 때")
         class Context_post_request {
             @Nested
-            @DisplayName("올바른 Meetup 정보 JSON 을 함께 받는다면")
+            @DisplayName("유효한 Meetup 정보 JSON 을 받는다면")
             class Context_valid_meetup_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
@@ -59,7 +59,7 @@ public class MeetupControllerApiTest {
 
                     requestBuilder = post(rootPath);
 
-                    String json = "{\"name\":\"모각코\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2022-05-22 06:32:00\",\"endTime\":\"2022-05-22 11:20:00\"}";
+                    String json = "{\"name\":\"모각코\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2025-05-22 06:32:00\",\"endTime\":\"2025-05-22 11:20:00\"}";
 
                     requestBuilder
                             .content(json)
@@ -86,6 +86,33 @@ public class MeetupControllerApiTest {
                 @DisplayName("Meetup 을 리포지토리에 저장한다.")
                 void it_saves_meetup() {
                     assertThat(meetupJpaRepository.count()).isNotZero();
+                }
+            }
+
+            @Nested
+            @DisplayName("유효하지 않은 Meetup 정보 JSON 을 받는다면")
+            class Context_not_valid_meetup_data {
+                private final MockHttpServletRequestBuilder requestBuilder;
+                private final ResultActions resultActions;
+
+                public Context_not_valid_meetup_data() throws Exception {
+                    meetupJpaRepository.deleteAll();
+
+                    requestBuilder = post(rootPath);
+
+                    String json = "{\"name\":\"\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2022-05-22 06:32:00\",\"endTime\":\"2022-05-22 11:20:00\"}";
+
+                    requestBuilder
+                            .content(json)
+                            .contentType(MediaType.APPLICATION_JSON);
+
+                    resultActions = mockMvc.perform(requestBuilder);
+                }
+
+                @Test
+                @DisplayName("400 BAD REQUEST 코드로 응답한다.")
+                void it_responses_400_bad_request() throws Exception {
+                    resultActions.andExpect(status().isBadRequest());
                 }
             }
         }
