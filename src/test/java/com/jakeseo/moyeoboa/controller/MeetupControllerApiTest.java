@@ -113,7 +113,6 @@ public class MeetupControllerApiTest {
                 @DisplayName("400 BAD REQUEST 코드로 응답한다.")
                 void it_responses_400_bad_request() throws Exception {
                     resultActions.andExpect(status().isBadRequest());
-                    resultActions.andDo(print());
                 }
             }
         }
