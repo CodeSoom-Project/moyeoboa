@@ -185,6 +185,8 @@ public class MeetupControllerApiTest {
                     resultActions.andExpect(
                             content().json(objectMapper.writeValueAsString(meetups))
                     );
+
+                    resultActions.andDo(print());
                 }
 
                 @Test
