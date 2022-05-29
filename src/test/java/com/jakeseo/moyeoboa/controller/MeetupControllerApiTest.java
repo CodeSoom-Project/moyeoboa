@@ -3,12 +3,14 @@ package com.jakeseo.moyeoboa.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakeseo.moyeoboa.application.MeetupService;
 import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
+import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
 import com.jakeseo.moyeoboa.entity.Meetup;
 import com.jakeseo.moyeoboa.repository.MeetupJpaRepository;
 import com.jakeseo.moyeoboa.annotation.Utf8MockMvc;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -39,6 +42,8 @@ public class MeetupControllerApiTest {
     MeetupJpaRepository meetupJpaRepository;
     @Autowired
     ObjectMapper objectMapper;
+    @Autowired
+    ModelMapper modelMapper;
 
     @Nested
     @DisplayName("/ 경로는")
@@ -173,7 +178,9 @@ public class MeetupControllerApiTest {
                 @Test
                 @DisplayName("저장된 Meetup 을 리스트 형태로 반환한다.")
                 void it_returns_empty_json_list() throws Exception {
-                    List<Meetup> meetups = meetupService.list();
+                    List<MeetupResponseDto> meetups = meetupService.list().stream()
+                            .map((meetup -> modelMapper.map(meetup, MeetupResponseDto.class)))
+                            .collect(Collectors.toList());
 
                     resultActions.andExpect(
                             content().json(objectMapper.writeValueAsString(meetups))
