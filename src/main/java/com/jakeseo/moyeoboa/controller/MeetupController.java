@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,7 @@ public class MeetupController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public MeetupResponseDto create(@RequestBody MeetupCreationDto dto) {
-        // TODO: @Valid 를 통해 데이터 검증 추가하기
+    public MeetupResponseDto create(@Valid @RequestBody MeetupCreationDto dto) {
         return modelMapper.map(meetupService.create(dto), MeetupResponseDto.class);
     }
 
