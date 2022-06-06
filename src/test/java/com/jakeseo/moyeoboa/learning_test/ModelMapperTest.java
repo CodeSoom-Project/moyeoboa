@@ -1,7 +1,7 @@
 package com.jakeseo.moyeoboa.learning_test;
 
-import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
-import com.jakeseo.moyeoboa.entity.Meetup;
+import com.jakeseo.moyeoboa.dto.StudyGroupResponseDto;
+import com.jakeseo.moyeoboa.entity.StudyGroup;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,12 +23,12 @@ public class ModelMapperTest {
     @DisplayName("map() 메서드는")
     class Describe_map {
         @Nested
-        @DisplayName("meetup 인스턴스와 MeetupResponseDto 클래스 정보를 받았을 때")
-        class Context_meetup_instance_and_meetup_response_dto_class {
+        @DisplayName("studyGroup 인스턴스와 StudyGroupResponseDto 클래스 정보를 받았을 때")
+        class Context_studyGroup_instance_and_studyGroupResponseDto_class {
             @Test
-            @DisplayName("meetup 인스턴스가 매핑된 MeetupResponseDto 클래스를 반환한다.")
-            void it_returns_mapped_meetup_response_dto() {
-                Meetup meetup = Meetup.builder()
+            @DisplayName("studyGroup 인스턴스가 매핑된 StudyGroupResponseDto 클래스를 반환한다.")
+            void it_returns_mapped_study_group_response_dto() {
+                StudyGroup studyGroup = StudyGroup.builder()
                         .name("모각코")
                         .place("서울")
                         .capacity(5)
@@ -37,16 +37,16 @@ public class ModelMapperTest {
                         .joinUsers("Jake Seo")
                         .build();
 
-                MeetupResponseDto responseDto = modelMapper.map(meetup, MeetupResponseDto.class);
+                StudyGroupResponseDto responseDto = modelMapper.map(studyGroup, StudyGroupResponseDto.class);
 
                 Assertions.assertThat(responseDto).isNotNull();
-                Assertions.assertThat(responseDto).isInstanceOf(MeetupResponseDto.class);
+                Assertions.assertThat(responseDto).isInstanceOf(StudyGroupResponseDto.class);
 
-                Assertions.assertThat(responseDto.getName()).isEqualTo(meetup.getName());
-                Assertions.assertThat(responseDto.getPlace()).isEqualTo(meetup.getPlace());
-                Assertions.assertThat(responseDto.getStartTime()).isEqualTo(meetup.getStartTime());
-                Assertions.assertThat(responseDto.getEndTime()).isEqualTo(meetup.getEndTime());
-                Assertions.assertThat(responseDto.getJoinUsers()).isEqualTo(meetup.getJoinUsers());
+                Assertions.assertThat(responseDto.getName()).isEqualTo(studyGroup.getName());
+                Assertions.assertThat(responseDto.getPlace()).isEqualTo(studyGroup.getPlace());
+                Assertions.assertThat(responseDto.getStartTime()).isEqualTo(studyGroup.getStartTime());
+                Assertions.assertThat(responseDto.getEndTime()).isEqualTo(studyGroup.getEndTime());
+                Assertions.assertThat(responseDto.getJoinUsers()).isEqualTo(studyGroup.getJoinUsers());
             }
         }
     }

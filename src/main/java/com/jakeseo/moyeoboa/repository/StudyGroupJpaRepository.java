@@ -1,13 +1,13 @@
 package com.jakeseo.moyeoboa.repository;
 
-import com.jakeseo.moyeoboa.entity.Meetup;
+import com.jakeseo.moyeoboa.entity.StudyGroup;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface MeetupJpaRepository extends MeetupRepository, CrudRepository<Meetup, Long> {
+public interface StudyGroupJpaRepository extends StudyGroupRepository, CrudRepository<StudyGroup, Long> {
     @Override
-    List<Meetup> findAll();
+    List<StudyGroup> findAll();
 }

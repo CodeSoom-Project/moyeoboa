@@ -1,8 +1,8 @@
 package com.jakeseo.moyeoboa.controller;
 
-import com.jakeseo.moyeoboa.application.MeetupService;
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
-import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
+import com.jakeseo.moyeoboa.application.StudyGroupService;
+import com.jakeseo.moyeoboa.dto.StudyGroupCreationDto;
+import com.jakeseo.moyeoboa.dto.StudyGroupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,27 +19,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/meetups")
+@RequestMapping("/study-groups")
 @RequiredArgsConstructor
-public class MeetupController {
-    private final MeetupService meetupService;
+public class StudyGroupController {
+    private final StudyGroupService studyGroupService;
     private final ModelMapper modelMapper;
 
     @GetMapping("")
-    public List<MeetupResponseDto> list() {
-        return meetupService.list().stream()
-                .map((meetup -> modelMapper.map(meetup, MeetupResponseDto.class)))
+    public List<StudyGroupResponseDto> list() {
+        return studyGroupService.list().stream()
+                .map((studyGroup -> modelMapper.map(studyGroup, StudyGroupResponseDto.class)))
                 .collect(Collectors.toList());
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public MeetupResponseDto create(@Valid @RequestBody MeetupCreationDto dto) {
-        return modelMapper.map(meetupService.create(dto), MeetupResponseDto.class);
+    public StudyGroupResponseDto create(@Valid @RequestBody StudyGroupCreationDto dto) {
+        return modelMapper.map(studyGroupService.create(dto), StudyGroupResponseDto.class);
     }
 
     @GetMapping("/{id}")
-    public MeetupResponseDto detail(@PathVariable Long id) {
-        return modelMapper.map(meetupService.detail(id), MeetupResponseDto.class);
+    public StudyGroupResponseDto detail(@PathVariable Long id) {
+        return modelMapper.map(studyGroupService.detail(id), StudyGroupResponseDto.class);
     }
 }

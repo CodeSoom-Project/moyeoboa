@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MeetupResponseDto {
+public class StudyGroupResponseDto {
     private Long id;
     private String name;
     private int capacity;

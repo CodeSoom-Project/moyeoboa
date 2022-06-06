@@ -1,11 +1,11 @@
 package com.jakeseo.moyeoboa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jakeseo.moyeoboa.application.MeetupService;
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
-import com.jakeseo.moyeoboa.dto.MeetupResponseDto;
-import com.jakeseo.moyeoboa.entity.Meetup;
-import com.jakeseo.moyeoboa.repository.MeetupJpaRepository;
+import com.jakeseo.moyeoboa.application.StudyGroupService;
+import com.jakeseo.moyeoboa.dto.StudyGroupCreationDto;
+import com.jakeseo.moyeoboa.dto.StudyGroupResponseDto;
+import com.jakeseo.moyeoboa.entity.StudyGroup;
+import com.jakeseo.moyeoboa.repository.StudyGroupJpaRepository;
 import com.jakeseo.moyeoboa.annotation.Utf8MockMvc;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,14 +32,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Utf8MockMvc
 @SpringBootTest
-@DisplayName("/meetups")
-public class MeetupControllerApiTest {
+@DisplayName("/study-groups")
+public class StudyGroupControllerApiTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    MeetupService meetupService;
+    StudyGroupService studyGroupService;
     @Autowired
-    MeetupJpaRepository meetupJpaRepository;
+    StudyGroupJpaRepository studyGroupJpaRepository;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -48,19 +48,19 @@ public class MeetupControllerApiTest {
     @Nested
     @DisplayName("/ 경로는")
     class Describe_root_path {
-        String rootPath = "/meetups";
+        String rootPath = "/study-groups";
 
         @Nested
         @DisplayName("POST 요청을 받았을 때")
         class Context_post_request {
             @Nested
-            @DisplayName("유효한 Meetup 정보 JSON 을 받는다면")
-            class Context_valid_meetup_data {
+            @DisplayName("유효한 StudyGroup 정보 JSON 을 받는다면")
+            class Context_valid_study_group_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
 
-                public Context_valid_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_valid_study_group_data() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
                     requestBuilder = post(rootPath);
 
@@ -80,32 +80,32 @@ public class MeetupControllerApiTest {
                 }
 
                 @Test
-                @DisplayName("MeetupResponseDto 를 반환한다.")
-                void it_returns_meetup_response() throws Exception {
+                @DisplayName("StudyGroupResponseDto 를 반환한다.")
+                void it_returns_studyGroupResponseDto() throws Exception {
                     resultActions.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-                    resultActions.andExpect(content().string(containsString("\"name\":\"모각코\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2022-05-22 06:32:00\",\"endTime\":\"2022-05-22 11:20:00\"")));
+                    resultActions.andExpect(content().string(containsString("\"name\":\"모각코\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2025-05-22 06:32:00\",\"endTime\":\"2025-05-22 11:20:00\"")));
                     resultActions.andDo(print());
                 }
 
                 @Test
-                @DisplayName("Meetup 을 리포지토리에 저장한다.")
-                void it_saves_meetup() {
-                    assertThat(meetupJpaRepository.count()).isNotZero();
+                @DisplayName("StudyGroup 을 리포지토리에 저장한다.")
+                void it_saves_studyGroup() {
+                    assertThat(studyGroupJpaRepository.count()).isNotZero();
                 }
             }
 
             @Nested
-            @DisplayName("유효하지 않은 Meetup 정보 JSON 을 받는다면")
-            class Context_not_valid_meetup_data {
+            @DisplayName("유효하지 않은 StudyGroup 정보 JSON 을 받는다면")
+            class Context_not_valid_studyGroupData {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
 
-                public Context_not_valid_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_not_valid_studyGroupData() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
                     requestBuilder = post(rootPath);
 
-                    String json = "{\"name\":\"\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2022-05-22 06:32:00\",\"endTime\":\"2022-05-22 11:20:00\"}";
+                    String json = "{\"name\":\"\",\"capacity\":5,\"place\":\"서울\",\"joinUsers\":\"JakeSeo\",\"startTime\":\"2025-05-22 06:32:00\",\"endTime\":\"2025-05-22 11:20:00\"}";
 
                     requestBuilder
                             .content(json)
@@ -126,13 +126,13 @@ public class MeetupControllerApiTest {
         @DisplayName("GET 요청을 받았을 때")
         class Context_get_request {
             @Nested
-            @DisplayName("저장된 Meetup 데이터가 없다면")
-            class Context_without_meetup_data {
+            @DisplayName("저장된 StudyGroup 데이터가 없다면")
+            class Context_without_studyGroup_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
 
-                public Context_without_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_without_studyGroup_data() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
                     requestBuilder = get(rootPath);
                     resultActions = mockMvc.perform(requestBuilder);
@@ -152,15 +152,15 @@ public class MeetupControllerApiTest {
             }
 
             @Nested
-            @DisplayName("저장된 Meetup 데이터가 있다면")
-            class Context_with_meetup_data {
+            @DisplayName("저장된 StudyGroup 데이터가 있다면")
+            class Context_with_studyGroup_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
 
-                public Context_with_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_with_studyGroup_data() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
-                    MeetupCreationDto dto = MeetupCreationDto.builder()
+                    StudyGroupCreationDto dto = StudyGroupCreationDto.builder()
                             .name("모각코")
                             .place("서울")
                             .capacity(5)
@@ -169,21 +169,21 @@ public class MeetupControllerApiTest {
                             .joinUsers("Jake Seo")
                             .build();
 
-                    meetupService.create(dto);
+                    studyGroupService.create(dto);
 
                     requestBuilder = get(rootPath);
                     resultActions = mockMvc.perform(requestBuilder);
                 }
 
                 @Test
-                @DisplayName("저장된 Meetup 을 리스트 형태로 반환한다.")
+                @DisplayName("저장된 StudyGroup 을 리스트 형태로 반환한다.")
                 void it_returns_empty_json_list() throws Exception {
-                    List<MeetupResponseDto> meetups = meetupService.list().stream()
-                            .map((meetup -> modelMapper.map(meetup, MeetupResponseDto.class)))
+                    List<StudyGroupResponseDto> responses = studyGroupService.list().stream()
+                            .map((studyGroup -> modelMapper.map(studyGroup, StudyGroupResponseDto.class)))
                             .collect(Collectors.toList());
 
                     resultActions.andExpect(
-                            content().json(objectMapper.writeValueAsString(meetups))
+                            content().json(objectMapper.writeValueAsString(responses))
                     );
 
                     resultActions.andDo(print());
@@ -206,17 +206,17 @@ public class MeetupControllerApiTest {
         class Context_get_request {
 
             @Nested
-            @DisplayName("id 에 해당하는 Meetup 데이터가 있다면")
-            class Context_with_meetup_data {
+            @DisplayName("id 에 해당하는 StudyGroup 데이터가 있다면")
+            class Context_with_studyGroup_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
                 private final String pathWithId;
-                private final Meetup foundMeetup;
+                private final StudyGroup foundStudyGroup;
 
-                public Context_with_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_with_studyGroup_data() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
-                    MeetupCreationDto dto = MeetupCreationDto.builder()
+                    StudyGroupCreationDto dto = StudyGroupCreationDto.builder()
                             .name("모각코")
                             .place("서울")
                             .capacity(5)
@@ -225,17 +225,17 @@ public class MeetupControllerApiTest {
                             .joinUsers("Jake Seo")
                             .build();
 
-                    foundMeetup = meetupService.create(dto);
-                    pathWithId = "/meetups/" + foundMeetup.getId();
+                    foundStudyGroup = studyGroupService.create(dto);
+                    pathWithId = "/study-groups/" + foundStudyGroup.getId();
 
                     requestBuilder = get(pathWithId);
                     resultActions = mockMvc.perform(requestBuilder);
                 }
 
                 @Test
-                @DisplayName("찾은 Meetup 객체를 JSON 형태로 반환한다.")
+                @DisplayName("찾은 StudyGroup 객체를 JSON 형태로 반환한다.")
                 void it_returns_json_object() throws Exception {
-                    resultActions.andExpect(content().json(objectMapper.writeValueAsString(foundMeetup)));
+                    resultActions.andExpect(content().json(objectMapper.writeValueAsString(foundStudyGroup)));
                 }
 
                 @Test
@@ -246,25 +246,25 @@ public class MeetupControllerApiTest {
             }
 
             @Nested
-            @DisplayName("id 에 해당하는 Meetup 데이터가 없다면")
-            class Context_without_meetup_data {
+            @DisplayName("id 에 해당하는 StudyGroup 데이터가 없다면")
+            class Context_without_studyGroup_data {
                 private final MockHttpServletRequestBuilder requestBuilder;
                 private final ResultActions resultActions;
                 private final String pathWithId;
 
-                public Context_without_meetup_data() throws Exception {
-                    meetupJpaRepository.deleteAll();
+                public Context_without_studyGroup_data() throws Exception {
+                    studyGroupJpaRepository.deleteAll();
 
-                    pathWithId = "/meetups/1";
+                    pathWithId = "/study-groups/1";
 
                     requestBuilder = get(pathWithId);
                     resultActions = mockMvc.perform(requestBuilder);
                 }
 
                 @Test
-                @DisplayName("MeetupNotFoundException 예외를 반환한다.")
+                @DisplayName("StudyGroupNotFoundException 예외를 반환한다.")
                 void it_throws_not_found_exception() throws Exception {
-                    resultActions.andExpect(content().string(containsString("MeetupNotFoundException")))
+                    resultActions.andExpect(content().string(containsString("StudyGroupNotFoundException")))
                             .andDo(print());
                 }
 
