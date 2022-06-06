@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class MeetupCreationDto {
+public class StudyGroupCreationDto {
     @NotBlank(message = "모임의 이름을 입력해주세요.")
     private String name;
     @Range(min = 1, max = 1000, message = "모임의 정원은 최소 1명 이상이어야 합니다.")
@@ -26,7 +26,7 @@ public class MeetupCreationDto {
     private LocalDateTime endTime;
 
     @Builder
-    public MeetupCreationDto(String name, int capacity, String place, String joinUsers, LocalDateTime startTime, LocalDateTime endTime) {
+    public StudyGroupCreationDto(String name, int capacity, String place, String joinUsers, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;
         this.capacity = capacity;
         this.place = place;

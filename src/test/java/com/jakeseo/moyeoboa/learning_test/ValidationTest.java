@@ -1,12 +1,11 @@
 package com.jakeseo.moyeoboa.learning_test;
 
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
+import com.jakeseo.moyeoboa.dto.StudyGroupCreationDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
@@ -35,18 +34,18 @@ public class ValidationTest {
             @Test
             @DisplayName("객체를 검증하고, Set<ConstraintViolation> 을 반환한다.")
             void it_returns_set_of_constraint_violation() {
-                MeetupCreationDto meetupCreationDto = MeetupCreationDto.builder().name("").build();
-                Set<ConstraintViolation<MeetupCreationDto>> violations = validator.validate(meetupCreationDto);
+                StudyGroupCreationDto studyGroupCreationDto = StudyGroupCreationDto.builder().name("").build();
+                Set<ConstraintViolation<StudyGroupCreationDto>> violations = validator.validate(studyGroupCreationDto);
 
                 Assertions.assertThat(violations).isNotNull();
                 Assertions.assertThat(violations.size()).isNotZero();
 
-                for (ConstraintViolation<MeetupCreationDto> violation : violations) {
+                for (ConstraintViolation<StudyGroupCreationDto> violation : violations) {
                     String message = violation.getMessage();
                     System.out.println("message = " + message);
                     Path propertyPath = violation.getPropertyPath();
                     System.out.println("propertyPath = " + propertyPath);
-                    Class<MeetupCreationDto> rootBeanClass = violation.getRootBeanClass();
+                    Class<StudyGroupCreationDto> rootBeanClass = violation.getRootBeanClass();
                     System.out.println("rootBeanClass = " + rootBeanClass);
                     String messageTemplate = violation.getMessageTemplate();
                     System.out.println("messageTemplate = " + messageTemplate);

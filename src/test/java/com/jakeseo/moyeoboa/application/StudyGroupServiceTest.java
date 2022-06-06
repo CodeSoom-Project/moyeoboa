@@ -1,8 +1,8 @@
 package com.jakeseo.moyeoboa.application;
 
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
-import com.jakeseo.moyeoboa.entity.Meetup;
-import com.jakeseo.moyeoboa.repository.MeetupJpaRepository;
+import com.jakeseo.moyeoboa.dto.StudyGroupCreationDto;
+import com.jakeseo.moyeoboa.entity.StudyGroup;
+import com.jakeseo.moyeoboa.repository.StudyGroupJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,29 +13,28 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DisplayName("MeetupService ")
-class MeetupServiceTest {
+@DisplayName("StudyGroupService ")
+class StudyGroupServiceTest {
     @Autowired
-    MeetupService meetupService;
+    StudyGroupService studyGroupService;
     @Autowired
-    MeetupJpaRepository meetupRepository;
+    StudyGroupJpaRepository studyGroupRepository;
 
     @Nested
     @DisplayName("create() 메서드는")
     class Describe_create {
         @Nested
-        @DisplayName("유효한 MeetupCreationDto 를 받았을 때")
+        @DisplayName("유효한 StudyGroupCreationDto 를 받았을 때")
         class Context_valid_input {
-            private final Meetup result;
-            private final MeetupCreationDto dto;
+            private final StudyGroup result;
+            private final StudyGroupCreationDto dto;
 
             public Context_valid_input() {
-                meetupRepository.deleteAll();
+                studyGroupRepository.deleteAll();
 
-                dto = MeetupCreationDto.builder()
+                dto = StudyGroupCreationDto.builder()
                         .name("모각코")
                         .place("서울")
                         .capacity(5)
@@ -44,20 +43,20 @@ class MeetupServiceTest {
                         .joinUsers("JakeSeo")
                         .build();
 
-                result = meetupService.create(dto);
+                result = studyGroupService.create(dto);
             }
 
             @Test
-            @DisplayName("Meetup 엔티티를 리포지토리에 저장한다.")
-            void it_saves_meetup() {
-                assertThat(meetupRepository.count()).isEqualTo(1);
+            @DisplayName("StudyGroup 엔티티를 리포지토리에 저장한다.")
+            void it_saves_studyGroup() {
+                assertThat(studyGroupRepository.count()).isEqualTo(1);
             }
 
             @Test
-            @DisplayName("정보가 입력된 Meetup 엔티티를 반환한다.")
-            void it_returns_meetup() {
+            @DisplayName("정보가 입력된 StudyGroup 엔티티를 반환한다.")
+            void it_returns_studyGroup() {
                 assertThat(result).isNotNull();
-                assertThat(result).isInstanceOf(Meetup.class);
+                assertThat(result).isInstanceOf(StudyGroup.class);
 
                 assertThat(result.getName()).isEqualTo(dto.getName());
                 assertThat(result.getPlace()).isEqualTo(dto.getPlace());
@@ -75,9 +74,9 @@ class MeetupServiceTest {
         @DisplayName("리포지토리에 데이터가 있을 때")
         class Context_with_data_in_repository {
             public Context_with_data_in_repository() {
-                meetupRepository.deleteAll();
+                studyGroupRepository.deleteAll();
 
-                MeetupCreationDto dto = MeetupCreationDto.builder()
+                StudyGroupCreationDto dto = StudyGroupCreationDto.builder()
                         .name("모각코")
                         .place("서울")
                         .capacity(5)
@@ -86,13 +85,13 @@ class MeetupServiceTest {
                         .joinUsers("JakeSeo")
                         .build();
 
-                meetupService.create(dto);
+                studyGroupService.create(dto);
             }
 
             @Test
             @DisplayName("리포지토리에 있는 데이터를 리스트 형태로 반환한다.")
             void it_returns_data_as_list_form() {
-                List<Meetup> list = meetupService.list();
+                List<StudyGroup> list = studyGroupService.list();
                 assertThat(list.size()).isNotZero();
                 assertThat(list.get(0).getName()).isEqualTo("모각코");
             }

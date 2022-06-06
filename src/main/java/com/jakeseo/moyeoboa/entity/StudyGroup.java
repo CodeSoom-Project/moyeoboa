@@ -1,6 +1,6 @@
 package com.jakeseo.moyeoboa.entity;
 
-import com.jakeseo.moyeoboa.dto.MeetupCreationDto;
+import com.jakeseo.moyeoboa.dto.StudyGroupCreationDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.StringJoiner;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Meetup {
+public class StudyGroup {
     @Id
     @GeneratedValue
     private Long id;
@@ -28,7 +28,7 @@ public class Meetup {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public Meetup(MeetupCreationDto dto) {
+    public StudyGroup(StudyGroupCreationDto dto) {
         this.name = dto.getName();
         this.capacity = dto.getCapacity();
         this.place = dto.getPlace();
@@ -38,7 +38,7 @@ public class Meetup {
     }
 
     @Builder
-    public Meetup(String name, int capacity, String place, String joinUsers, LocalDateTime startTime, LocalDateTime endTime) {
+    public StudyGroup(String name, int capacity, String place, String joinUsers, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;
         this.capacity = capacity;
         this.place = place;
@@ -49,7 +49,7 @@ public class Meetup {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Meetup.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", StudyGroup.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("name='" + name + "'")
                 .add("capacity=" + capacity)
