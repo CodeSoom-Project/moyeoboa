@@ -14,9 +14,6 @@
 </head>
 <body>
     <div id="studyGroupListWrapper">
-        <ol>
-            <li>ㅇㅇd</li>
-        </ol>
     </div>
     <form id="studyGroupForm" action="/study-groups" method="post">
         <div id="wrapper">
@@ -82,17 +79,35 @@
 
             fetch('/study-groups')
                 .then((response) => {
-                    if (response.status === 200) {
+                    if (response.ok) {
                         return response.json();
                     }
 
-                    // TODO: 상태코드가 정상적이지 않을 때의 로직 추가
+                    throw `네트워크 상에 문제가 있습니다.`
                 })
                 .then((json) => {
-                    console.log(json);
-                    // TODO: '#studyGroupListWrapper' 에 데이터를 예쁘게 넣는 코드 추가하기
+                    for (const studyGroup of json) {
+                        const {id, name, joinUsers, place} = studyGroup;
+
+                        append("studyGroupListWrapper", makeTextDiv(id));
+                        append("studyGroupListWrapper", makeTextDiv(name));
+                        append("studyGroupListWrapper", makeTextDiv(joinUsers));
+                        append("studyGroupListWrapper", makeTextDiv(place));
+                    }
                 });
         });
+
+        function append(id, element) {
+            document.getElementById(id)
+                .append(element);
+        }
+
+        function makeTextDiv(text) {
+            const div = document.createElement("div");
+            div.append(document.createTextNode(text));
+
+            return div;
+        }
     </script>
 </body>
 </html>
