@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <style>
+        #wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div id="studyGroupListWrapper">
+    </div>
+    <form id="studyGroupForm" action="/study-groups" method="post">
+        <div id="wrapper">
+            <label for="name">모임 이름:</label><input type="text" id="name" name="name"/>
+            <label for="place">주로 모이는 장소:</label><input type="text" name="place" id="place"/>
+            <label for="joinUsers">회원 이름:</label><input type="text" name="joinUsers" id="joinUsers"/>
+            <label for="capacity">정원:</label><input type="number" name="capacity" id="capacity"/>
+            <button id="submitStudyGroup" style="margin-top: 10px;">생성</button>
+        </div>
+    </form>
+
+    <script>
+        /**
+         * @author Jake Seo (n00nietzsche)
+         * @returns string json 문자열
+         *
+         * Form 의 ID 를 집어서 해당 form 내부에 있는
+         * 데이터를 JSON 문자열 형태로 반환한다.
+         */
+        function getJson(formId) {
+            return JSON.stringify(
+                Object.fromEntries(new FormData(document.getElementById(formId)))
+            );
+        }
+
+        /**
+         * @author Jake Seo (n00nietzsche)
+         * @returns Promise<Response>
+         *
+         * JSON body 를 통해 API 를 호출한다.
+         * Response 가 들어있는 Promise 객체를 반환하며,
+         * fetchAPI(...).then((response) => callback(response))
+         * 위와 같은 형식으로 이용할 수 있다.
+         * response.json() 을 통해 결과값 json 문자열을 얻을 수도 있는데,
+         * 이도 Promise 객체로 제공되기 때문에
+         * fetchAPI(...).then((response) => response.json()).then(json => console.log(json));
+         * 위와 같은 형태로 사용해야 한다.
+         *
+         * @param path API 가 위치한 경로
+         * @param method GET, POST, PATCH 등의 HTTP 메서드
+         * @param body API 호출 시에 함께 전달할 HTTP Body ex) '{"name":"홍길동"}'
+         */
+        function fetchAPI(path, method, body) {
+            return fetch(path, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("submitStudyGroup").onclick = (e) => {
+                e.preventDefault();
+                fetchAPI('/study-groups', 'POST', getJson('studyGroupForm'))
+                    .then((response) => {
+                        console.log(response);
+                        return response.json();
+                    })
+                    .then((json) => console.log(json));
+            }
+
+            fetch('/study-groups')
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+
+                    throw `네트워크 상에 문제가 있습니다.`
+                })
+                .then((json) => {
+                    for (const studyGroup of json) {
+                        const {id, name, joinUsers, place} = studyGroup;
+
+                        append("studyGroupListWrapper", makeTextDiv(id));
+                        append("studyGroupListWrapper", makeTextDiv(name));
+                        append("studyGroupListWrapper", makeTextDiv(joinUsers));
+                        append("studyGroupListWrapper", makeTextDiv(place));
+                    }
+                });
+        });
+
+        function append(id, element) {
+            document.getElementById(id)
+                .append(element);
+        }
+
+        function makeTextDiv(text) {
+            const div = document.createElement("div");
+            div.append(document.createTextNode(text));
+
+            return div;
+        }
+    </script>
+</body>
+</html>

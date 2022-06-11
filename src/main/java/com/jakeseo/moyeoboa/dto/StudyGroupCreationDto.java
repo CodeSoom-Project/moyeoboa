@@ -20,6 +20,7 @@ public class StudyGroupCreationDto {
     private String place;
     @NotBlank(message = "최소 1명 이상 참석해야 합니다.")
     private String joinUsers;
+    // TODO : 리팩토링이 필요하다. startTime, endTime 을 지우고, 나중에 Meetup 에 넣자.
     @Future(message = "모임 시작 시간은 과거일 수 없습니다.")
     private LocalDateTime startTime;
     @Future(message = "모임 종료 시간은 과거일 수 없습니다.")
